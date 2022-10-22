@@ -1,3 +1,7 @@
+"""
+地形生成器抽象类型，对于它的实例 gen，支持
+* `gen(c::Chunk, world::World, idx, idy)` ，用于在世界的指定区块创建地形
+"""
 abstract type MapGenerator end
 struct AirFillGenerator <: MapGenerator end
 function (::AirFillGenerator)(c::Chunk, _, _, _)
@@ -45,7 +49,7 @@ end
 function (gen::InfMazeGenerator)(c::Chunk, world, idx, idy)
 	c.blks[1, 1:64] .= B_StarRock()
 	c.blks[2:64, 1] .= B_StarRock()
-	wsrand(world, xor(idx<<15+idy), world.seed)
+	wsrand(world, xor(idx<<15+idy, world.seed))
 	distance = idx^2+idy^2
 	_infmaze_zone_maze(c, world, 2, 2, 64, 64,
 		gen.plain || distance>25 ? 0 :
