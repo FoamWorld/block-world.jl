@@ -1,4 +1,3 @@
-using Random
 """
 将 seed 设置为 world 的随机种子
 """

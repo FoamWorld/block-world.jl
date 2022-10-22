@@ -1,8 +1,6 @@
-include("world.jl")
-include("background.jl")
 function initialize()
-	World
-	game;
+	game = Game(nothing)
 	guiset = init_mainmenu_gtk(game)
-	showall(guiset.window);
+	showall(guiset.window)
+	game
 end

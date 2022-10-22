@@ -1,6 +1,5 @@
-using Gtk
 abstract type GUISet end
-struct GtkGUISet<:GUISet
+mutable struct GtkGUISet<:GUISet
 	window::GtkWindow
 	topbox
 	# register
@@ -22,11 +21,11 @@ function background_mainmenu!(gui::GtkGUISet, game::Game)
 		destroy(gui.topbox)
 	end
 	box = gui.topbox = GtkBox(:v)
-	text_view = GtkTextView("FoamWorld")
+	text_view = GtkTextView(;editable=false, buffer=GtkTextBuffer(;text="Foam World"))
 	but_create = GtkButton("创建新世界")
 	push!(box, text_view)
 	push!(box, but_create)
-	push!(gtk.window, grids)
+	push!(gui.window, box)
 	signal_connect(but_create, "clicked") do
 		background_creategame!(gui, game)
 	end
@@ -47,6 +46,6 @@ function background_playgame!(gui::GtkGUISet, game::Game)
 	cvs = gui.topbox = GtkCanvas(576, 512)
 	draw(cvs) do widget _
 		ctx = getgc(widget)
-		draw(ctx, game)
+		paint(ctx, game)
 	end
 end

@@ -11,13 +11,13 @@ end
 struct InfMazeGenerator <: MapGenerator
 	plain::Bool
 end
+macro rd(l, r)
+	return :(wrand_even_q(world, $l, $r))
+end
 function _infmaze_zone_maze(c::Chunk, world, lx, ly, rx, ry, delta)
 	if rx-lx<delta || ry-ly<delta
 		c.blks[lx:rx, ly:ry] .= B_Air()
 		return
-	end
-	macro rd(l, r)
-		return $(wrand_even_q(world, l, r))
 	end
 	mx=@rd lx+1 rx-1
 	my=@rd ly+1 ry-1
