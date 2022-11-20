@@ -4,8 +4,8 @@ end
 
 mutable struct World
 	dims::Dimension
-	seed
-	rng
+	seed::UInt32
+	rng::UInt32
 	sav
 end
 function generate(c::Chunk, world::World, map_generator::MapGenerator, idx, idy)
