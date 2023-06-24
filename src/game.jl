@@ -12,14 +12,23 @@ end
 
 function propel_game()
     global game_hl
-    game_hl.points[0].rng += 1
+    global canvas
+    game_hl.points[1].rng += 1
+    reveal(canvas)
     nothing
 end
 
-function game_draw(ctx::GdkCairoContext)
+function game_draw(ctx::GraphicsContext)
     global game_hl
-    world = game_hl.points[0]
-    set_source_rgb(ctx, 0, 0, (world.rng & 255) / 256)
-    rectangle(ctx, 0, 0, 100, 100)
+    global topbox
+    try
+        world = game_hl.points[1]
+        rectangle(ctx, 0, 0, 100, 100)
+        set_source_rgb(ctx, 0, 0, (world.rng & 255) / 32)
+        fill(ctx)
+    catch err
+        dialog = warn_dialog("Error: $(err)")
+        push!(topbox, dialog)
+    end
     nothing
 end

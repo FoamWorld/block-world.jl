@@ -26,6 +26,7 @@ function julia_main()
     initialize()
 end
 
+include("crumb/gtk.jl")
 include("world/dworld.jl")
 
 end # module
