@@ -6,12 +6,8 @@ module FoamWorld
 # using StaticArrays
 # include("chunk.jl")
 # include("mapgenerator.jl")
-include("world.jl")
+include("worlds.jl")
 
-# 辅助功能
-# include("random.jl")
-
-# 总体流程控制
 using Gtk4
 mutable struct Game_hl
     points::Vector{AbstractWorld}
@@ -20,6 +16,7 @@ end
 
 global window::GtkWindow
 global topbox::GtkWidget
+global canvas::GtkCanvas
 global game_hl::Game_hl
 
 include("game.jl")
@@ -28,5 +25,7 @@ include("background.jl")
 function julia_main()
     initialize()
 end
+
+include("world/dworld.jl")
 
 end # module

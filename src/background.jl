@@ -30,11 +30,30 @@ function init_creategame_gtk()
 end
 
 function init_game_gtk()
-    println(stderr, "flag")
-    #= destroy(topbox)
-    topbox = GtkCanvas(576, 512)
-    draw(cvs) do widget
-        _
-        ctx = getgc(widget)
-    end =#
+    global topbox
+    global canvas = GtkCanvas(576, 512)
+    empty!(topbox)
+    draw(canvas) do widget
+        context = getgc(widget)
+        game_draw(context)
+    end
+    # Game Logic
+    initialize_game()
+    ch = Channel{Bool}(0)
+    timer = Timer(0; interval=0.05) do _
+        put!(ch, true)
+    end
+    event_esc = GtkEventControllerKey(topbox)
+    set_gtk_property!(event_esc, :key_pressed, Ref(function (key)
+        println(get_gtk_property(key, :keycode))
+    end))
+    task = @task begin
+        while true
+            take!(ch) || break
+            propel_game()
+        end
+    end
+    schedule(task)
+    # ;
+    push!(topbox, canvas)
 end
