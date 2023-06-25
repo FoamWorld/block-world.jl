@@ -14,6 +14,7 @@ mutable struct Game_hl
     config::Dict
 end
 
+global application::GtkApplication
 global window::GtkWindow
 global topbox::GtkWidget
 global canvas::GtkCanvas

@@ -1,6 +1,8 @@
 function init_mainmenu_gtk()
+    global application = GtkApplication()
     global window = GtkWindow("FoamWorld", 576, 512, false) # unresizable
     global topbox = GtkBox(:v)
+    push!(application, window)
     push!(window, topbox)
     init_menu_gtk()
     present(window, 0)
