@@ -1,6 +1,7 @@
 function initialize()
     global game_hl = Game_hl(Vector{AbstractWorld}(), Dict{Symbol,Any}())
-    init_mainmenu_gtk()
+    global application = GtkApplication()
+    signal_connect(init_window_gtk, application, :activate)
     nothing
 end
 
@@ -8,6 +9,9 @@ function initialize_game()
     global game_hl
     game_hl.points = [DWorld(0)]
     nothing
+end
+
+function destroy_game(save::Bool=true)
 end
 
 function propel_game()
@@ -20,6 +24,7 @@ end
 
 function game_draw(ctx::GraphicsContext)
     global game_hl
+    global window
     global topbox
     try
         world = game_hl.points[1]
@@ -27,8 +32,7 @@ function game_draw(ctx::GraphicsContext)
         set_source_rgb(ctx, 0, 0, (world.rng & 255) / 32)
         fill(ctx)
     catch err
-        dialog = warn_dialog("Error: $(err)")
-        push!(topbox, dialog)
+        warn_dialog("Error: $(err)", window)
     end
     nothing
 end
