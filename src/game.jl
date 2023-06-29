@@ -29,7 +29,7 @@ function game_draw(ctx::GraphicsContext)
     try
         world = game_hl.points[1]
         rectangle(ctx, 0, 0, 100, 100)
-        set_source_rgb(ctx, 0, 0, (world.rng & 255) / 32)
+        set_source_rgb(ctx, 0, 0, (world.rng & 255) / 256)
         fill(ctx)
     catch err
         warn_dialog("Error: $(err)", window)

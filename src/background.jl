@@ -11,6 +11,7 @@ end
 
 function init_menu_gtk()
     global topbox
+    empty!(topbox)
     # Text
     label = GtkLabel("Foam World")
     # Gtk4.markup(label, """<span size="x-large">Foam World</span>""")
@@ -18,7 +19,7 @@ function init_menu_gtk()
     # Button
     but_create = GtkButton("创建新世界")
     signal_connect(but_create, "clicked") do _
-        init_creategame_gtk()
+        @idle_add init_creategame_gtk()
     end
     # ;
     push!(topbox, label)
@@ -32,7 +33,7 @@ function init_creategame_gtk()
     # Button
     but = GtkButton("创建")
     signal_connect(but, "clicked") do _
-        init_game_gtk()
+        @idle_add init_game_gtk()
     end
     # ;
     push!(topbox, but)
