@@ -1,13 +1,6 @@
 module FoamWorld
 
-# 提供基本类型
-# include("blocks.jl")
-
-# using StaticArrays
-# include("chunk.jl")
-# include("mapgenerator.jl")
-include("worlds.jl")
-
+# 界面框架
 using Gtk4 # https://docs.juliahub.com/Gtk4/rFcBQ/0.4.1/
 mutable struct Game_hl
     points::Vector{AbstractWorld}
@@ -37,6 +30,12 @@ function julia_main()
 end
 
 include("crumb/gtk.jl")
+include("crumb/random.jl")
+include("mapgenerators.jl")
+include("blocks.jl")
+include("items.jl")
+include("entities.jl")
+include("world/dchunk.jl")
 include("world/dworld.jl")
 
 end # module
