@@ -32,7 +32,7 @@ function game_draw(ctx::GraphicsContext)
         set_source_rgb(ctx, 0, 0, (world.rng & 255) / 256)
         fill(ctx)
     catch err
-        warn_dialog("Error: $(err)", window)
+        warn_dialog("Error: $(repr(err))", window)
     end
     nothing
 end
