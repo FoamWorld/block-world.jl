@@ -6,18 +6,18 @@ end
 Base.getindex(c::DChunk, x, y) = c.blocks[x, y]
 Base.setindex!(c::DChunk, v, x, y) = c.blocks[x, y] = v
 
+function chunk_index(x)
+    (x >> 4), (x & 15)
+end
+
 """
-将地图坐标系 (lx, ly) 格左下角显示到画板坐标系 (px, py)
+显示区块坐标系 (xsc..., ysc...) （以 0 起始）。区块坐标 (0, 0) 对应画板坐标 (px, py)
 """
-function chunk_paint(ctx, c::DChunk, lx::Integer, ly::Integer, px, py)
-    rx = min(16, lx + Int(ceil(9 - px)))
-    ry = min(16, ly + Int(ceil(8 - py)))
-    for i in lx:rx
-        for j in ly:ry
-            x0 = px + (i - lx)
-            y0 = py + (j - ly)
-            b = c[i, j]
-            b_show(ctx, b, Pair(x0, y0))
+function chunk_paint(ctx, c::DChunk, xsc, ysc, px, py)
+    for i in xsc
+        for j in ysc
+            b = c[i + 1, j + 1]
+            b_show(ctx, b, Pair(px + i, py + j))
         end
     end
     fill(ctx)

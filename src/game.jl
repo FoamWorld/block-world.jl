@@ -17,7 +17,6 @@ end
 function propel_game()
     global game_hl
     global canvas
-    game_hl.points[1].rng += 1
     reveal(canvas)
     nothing
 end
@@ -26,11 +25,7 @@ function game_draw(ctx::GraphicsContext)
     global game_hl
     global window
     global topbox
-    try
-        world = game_hl.points[1]
-        world_paint(ctx, world)
-    catch err
-        warn_dialog("Error: $(repr(err))", window)
-    end
+    world = game_hl.points[1]
+    world_paint(ctx, world)
     nothing
 end

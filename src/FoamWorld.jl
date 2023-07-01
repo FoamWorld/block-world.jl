@@ -2,6 +2,7 @@ module FoamWorld
 
 # 界面框架
 using Gtk4 # https://docs.juliahub.com/Gtk4/rFcBQ/0.4.1/
+using Graphics
 abstract type AbstractWorld end
 mutable struct Game_hl
     points::Vector{AbstractWorld}

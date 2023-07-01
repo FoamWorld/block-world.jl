@@ -13,8 +13,8 @@ function init_menu_gtk()
     global topbox
     empty!(topbox)
     # Text
-    label = GtkLabel("Foam World")
-    # Gtk4.markup(label, """<span size="x-large">Foam World</span>""")
+    label = GtkLabel("")
+    Gtk4.markup(label, """<span size="x-large">Foam World</span>""")
     Gtk4.justify(label, Gtk4.Justification_CENTER)
     # Button
     but_create = GtkButton("创建新世界")
@@ -67,9 +67,15 @@ function init_game_gtk()
     end
     schedule(task)
     # ;
-    @guarded draw(canvas) do widget
-        context = getgc(widget)
-        game_draw(context)
+    draw(canvas) do widget
+        try
+            context = getgc(widget)
+            game_draw(context)
+        catch err
+            @warn("Error in draw(canvas)", exception = (err, catch_backtrace()))
+            put!(ch, false)
+            warn_dialog("Error $(repr(err))", window)
+        end
     end
     push!(topbox, canvas)
 end
