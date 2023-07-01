@@ -69,8 +69,6 @@ function init_game_gtk()
     # ;
     @guarded draw(canvas) do widget
         context = getgc(widget)
-        set_coordinates(ctx, BoundingBox(0, width(ctx), height(ctx), 0))
-        scale(ctx, 16)
         game_draw(context)
     end
     push!(topbox, canvas)

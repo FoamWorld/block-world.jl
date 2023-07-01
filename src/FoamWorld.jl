@@ -30,7 +30,6 @@ function julia_main()
     end
 end
 
-using StaticArrays
 include("crumb/gtk.jl")
 include("crumb/random.jl")
 include("blocks.jl")

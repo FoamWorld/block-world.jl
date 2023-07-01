@@ -2,6 +2,9 @@
 方块，世界的填充物，在指定世界的指定坐标有且仅有一个方块
 """
 abstract type Block end
+Base.length(::Block) = 1
+Base.iterate(b::Block) = (b, nothing)
+Base.iterate(::Block, ::Nothing) = nothing
 
 struct B_Air <: Block end
 function b_show(ctx, ::B_Air, pos::Pair)

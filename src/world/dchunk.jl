@@ -1,5 +1,5 @@
 mutable struct DChunk
-    blocks::SMatrix{16,16,Block,256}
+    blocks::Matrix{Block}
     entities::Vector{Entity}
 end
 
