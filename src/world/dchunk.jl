@@ -1,27 +1,21 @@
 mutable struct DChunk
-    blocks::SMatrix{64, 64, Block, 4096}
-	entities::Vector{Entity}
+    blocks::SMatrix{16,16,Block,256}
+    entities::Vector{Entity}
 end
 
 Base.getindex(c::DChunk, x, y) = c.blocks[x, y]
 Base.setindex!(c::DChunk, v, x, y) = c.blocks[x, y] = v
 
-function DChunk(world::DWorld, pos::Pair)
-    c = DChunk(SMatrix{64, 64, Block, 4096}(Array{Block}(B_Air(), 64, 64)), Vector{Entity}())
-    gen = InfMazeGenerator(false, true)
-    generate(gen, c, world, pos)
-end
-
 """
-将坐标 (lx, ly) 左上角显示到画板 (px, py) 像素处
+将地图坐标系 (lx, ly) 格左下角显示到画板坐标系 (px, py)
 """
-function chunk_paint(ctx, c::DChunk, lx::Int, ly::Int, px::Int, py::Int)
-    rx = min(lx + 15 - px >> 5, 64)
-    ry = min(ly + 15 - py >> 5, 64)
+function chunk_paint(ctx, c::DChunk, lx::Integer, ly::Integer, px, py)
+    rx = min(16, lx + Int(ceil(9 - px)))
+    ry = min(16, ly + Int(ceil(8 - py)))
     for i in lx:rx
         for j in ly:ry
-            x0 = px + (i - lx) << 5
-            y0 = py + (j - ly) << 5
+            x0 = px + (i - lx)
+            y0 = py + (j - ly)
             b = c[i, j]
             b_show(ctx, b, Pair(x0, y0))
         end

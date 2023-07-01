@@ -1,5 +1,3 @@
-abstract type MapGenerator end
-
 struct FillGenerator <: MapGenerator
     fill::Block
 end

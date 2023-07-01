@@ -35,16 +35,16 @@ function _infmaze_zone(c::DChunk, world, lx, ly, rx, ry)
     end
 end
 function generate(gen::InfMazeGenerator, c::DChunk, world, id::Pair)
-    c[1, 1:64] .= B_Wall()
-    c[2:64, 1] .= B_Wall()
+    c[1, :] .= B_Wall()
+    c[:, 1] .= B_Wall()
     world.rng = xor(id.first, bitreverse(id.second) + world.seed)
     #= distance = hypot(id.first, id.second)
     delta = gen.wider ? 0 : begin
         distance < 2 ? 0 : distance < 4 ? 2 : 4
     end =#
-    _infmaze_zone(c, world, 2, 2, 64, 64)
-    b1 = (@rand(world) & 0x1f) << 1
-    b2 = (@rand(world) & 0x1f) << 1
+    _infmaze_zone(c, world, 2, 2, 16, 16)
+    b1 = (@rand(world) & 0x7) << 1
+    b2 = (@rand(world) & 0x7) << 1
     c[1, b1] = B_Air()
     c[b2, 1] = B_Air()
     #= (gen.plain || (distance > 4 && @rand(world) > 0xfff)) || return

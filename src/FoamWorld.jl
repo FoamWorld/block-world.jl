@@ -2,6 +2,7 @@ module FoamWorld
 
 # 界面框架
 using Gtk4 # https://docs.juliahub.com/Gtk4/rFcBQ/0.4.1/
+abstract type AbstractWorld end
 mutable struct Game_hl
     points::Vector{AbstractWorld}
     config::Dict
@@ -32,11 +33,13 @@ end
 using StaticArrays
 include("crumb/gtk.jl")
 include("crumb/random.jl")
-include("mapgenerators.jl")
 include("blocks.jl")
 include("items.jl")
 include("entities.jl")
 include("world/dchunk.jl")
+
+abstract type MapGenerator end
 include("world/dworld.jl")
+include("mapgenerators.jl")
 
 end # module
