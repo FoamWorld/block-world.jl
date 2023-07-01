@@ -59,7 +59,7 @@ function init_game_gtk()
     end
     task = @task begin
         while true
-            take!(ch) || break
+            take!(ch) && break
             propel_game()
         end
         close(timer)

@@ -7,6 +7,8 @@ mutable struct DWorld <: AbstractWorld
     flag::Bool
 end
 
+Base.getindex(w::DWorld, x::Int, y::Int) = w.chunks[Pair(x, y)]
+
 function DWorld(seed)
     vpos = Pair(0.0, 0.0)
     w = DWorld(Dict{Pair{Int,Int},DChunk}(), InfMazeGenerator(false, true), vpos, seed, 0, true)
@@ -44,17 +46,17 @@ function world_paint(ctx, w::DWorld)
     xoffset = 4.5 - mod(wx, 16)
     yoffset = 4 - mod(wy, 16)
     if lxchk == rxchk && lychk == rychk
-        chunk_paint(ctx, w.chunks[lxchk, lychk], lxind:rxind, lyind:ryind, xoffset, yoffset)
+        chunk_paint(ctx, w[lxchk, lychk], lxind:rxind, lyind:ryind, xoffset, yoffset)
     elseif lxchk != rxchk && lychk == rychk
-        chunk_paint(ctx, w.chunks[lxchk, lychk], lxind:15, lyind:ryind, xoffset, yoffset)
-        chunk_paint(ctx, w.chunks[rxchk, lychk], 0:rxind, lyind:ryind, xoffset + 16, yoffset)
+        chunk_paint(ctx, w[lxchk, lychk], lxind:15, lyind:ryind, xoffset, yoffset)
+        chunk_paint(ctx, w[rxchk, lychk], 0:rxind, lyind:ryind, xoffset + 16, yoffset)
     elseif lxchk == rxchk && lychk != rychk
-        chunk_paint(ctx, w.chunks[lxchk, lychk], lxind:rxind, lyind:15, xoffset, yoffset)
-        chunk_paint(ctx, w.chunks[lxchk, rychk], lxind:rxind, 0:ryind, xoffset, yoffset + 16)
+        chunk_paint(ctx, w[lxchk, lychk], lxind:rxind, lyind:15, xoffset, yoffset)
+        chunk_paint(ctx, w[lxchk, rychk], lxind:rxind, 0:ryind, xoffset, yoffset + 16)
     else
-        chunk_paint(ctx, w.chunks[lxchk, lychk], lxind:15, lyind:15, xoffset, yoffset)
-        chunk_paint(ctx, w.chunks[rxchk, lychk], 0:rxind, lyind:15, xoffset + 16, yoffset)
-        chunk_paint(ctx, w.chunks[lxchk, rychk], lxind:15, 0:ryind, xoffset, yoffset + 16)
-        chunk_paint(ctx, w.chunks[rxchk, rychk], 0:rxind, 0:ryind, xoffset + 16, yoffset + 16)
+        chunk_paint(ctx, w[lxchk, lychk], lxind:15, lyind:15, xoffset, yoffset)
+        chunk_paint(ctx, w[rxchk, lychk], 0:rxind, lyind:15, xoffset + 16, yoffset)
+        chunk_paint(ctx, w[lxchk, rychk], lxind:15, 0:ryind, xoffset, yoffset + 16)
+        chunk_paint(ctx, w[rxchk, rychk], 0:rxind, 0:ryind, xoffset + 16, yoffset + 16)
     end
 end
