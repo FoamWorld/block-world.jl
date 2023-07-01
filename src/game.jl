@@ -28,9 +28,7 @@ function game_draw(ctx::GraphicsContext)
     global topbox
     try
         world = game_hl.points[1]
-        rectangle(ctx, 0, 0, 100, 100)
-        set_source_rgb(ctx, 0, 0, (world.rng & 255) / 256)
-        fill(ctx)
+        world_paint(ctx, world)
     catch err
         warn_dialog("Error: $(repr(err))", window)
     end

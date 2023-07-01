@@ -15,3 +15,17 @@ function wrand_even_q(rng, l, r)
     rng, res = wrand_q(rng)
     (rng, l + res % (r - l) >> 1 << 1)
 end
+
+macro rand(world)
+    :(begin
+        world.rng, res = wrand_q(world.rng)
+        res
+    end)
+end
+
+macro rande(world, l, r)
+    :(begin
+        world.rng, res = wrand_even_q(world.rng, l, r)
+        res
+    end)
+end

@@ -47,7 +47,7 @@ function init_game_gtk()
     # Game Logic
     initialize_game()
     ch = Channel{Bool}(0)
-    timer = Timer(0; interval=1) do _
+    timer = Timer(0; interval=0.1) do _
         isempty(ch) || put!(ch, true)
     end
     event_esc = GtkEventControllerKey(window)
@@ -69,6 +69,8 @@ function init_game_gtk()
     # ;
     @guarded draw(canvas) do widget
         context = getgc(widget)
+        set_coordinates(ctx, BoundingBox(0, width(ctx), height(ctx), 0))
+        scale(ctx, 16)
         game_draw(context)
     end
     push!(topbox, canvas)
