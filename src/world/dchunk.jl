@@ -2,6 +2,7 @@ mutable struct DChunk
     blocks::Matrix{Block}
     entities::Vector{Entity}
 end
+# todo: https://minecraft.fandom.com/zh/wiki/%E5%8C%BA%E5%9D%97%E6%A0%BC%E5%BC%8F
 
 Base.getindex(c::DChunk, x, y) = c.blocks[x, y]
 Base.setindex!(c::DChunk, v, x, y) = c.blocks[x, y] = v
@@ -20,5 +21,4 @@ function chunk_paint(ctx, c::DChunk, xsc, ysc, px, py)
             b_show(ctx, b, Pair(px + i, py + j))
         end
     end
-    fill(ctx)
 end

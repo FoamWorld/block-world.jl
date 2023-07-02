@@ -52,9 +52,10 @@ function init_game_gtk()
     end
     event_esc = GtkEventControllerKey(window)
     signal_connect(event_esc, "key-pressed") do controller, keyval, keycode, state
-        println(keyval)
         if keyval == 65307 # esc
             put!(ch, false)
+        else
+            key_control(keyval)
         end
     end
     task = @task begin

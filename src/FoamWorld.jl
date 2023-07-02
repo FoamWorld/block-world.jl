@@ -35,11 +35,21 @@ include("crumb/gtk.jl")
 include("crumb/random.jl")
 include("blocks.jl")
 include("items.jl")
-include("entities.jl")
+
+using UUIDs
+abstract type Entity end
+mutable struct E_Player <: Entity
+	pos::Pair{Float64, Float64}
+	uuid::UUID
+end
 include("world/dchunk.jl")
 
 abstract type MapGenerator end
 include("world/dworld.jl")
 include("mapgenerators.jl")
+
+include("entities.jl")
+
+include("control.jl")
 
 end # module

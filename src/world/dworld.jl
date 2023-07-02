@@ -1,7 +1,8 @@
-mutable struct DWorld <: AbstractWorld
+Base.@kwdef mutable struct DWorld <: AbstractWorld
     chunks::Dict{Pair{Int,Int},DChunk}
     gen::MapGenerator
     viewpos::Pair
+    player::E_Player
     seed::UInt32
     rng::UInt32
     flag::Bool
@@ -11,7 +12,17 @@ Base.getindex(w::DWorld, x::Int, y::Int) = w.chunks[Pair(x, y)]
 
 function DWorld(seed)
     vpos = Pair(0.0, 0.0)
-    w = DWorld(Dict{Pair{Int,Int},DChunk}(), InfMazeGenerator(false, true), vpos, seed, 0, true)
+    ply = E_Player(vpos, UUIDs.uuid1())
+    w = DWorld(;
+        chunks=Dict{Pair{Int,Int},DChunk}(),
+        gen=InfMazeGenerator(false, true),
+        viewpos=vpos,
+        player=ply,
+        seed=seed,
+        rng=0,
+        flag=true
+    )
+    push!(w[0, 0].entities, ply)
     _dworld_loadchunk(w, Pair(0, 0))
     w
 end
@@ -34,14 +45,14 @@ end
 
 function world_paint(ctx, w::DWorld)
     if w.flag
-        set_coordinates(ctx, BoundingBox(0, 9, 8, 0))
+        set_coordinates(ctx, BoundingBox(0, 9, 0, 8)) # 保留 y 轴方向
         w.flag = false
     end
     # 地图坐标 w.viewpos 对应画板坐标 (4.5, 4)
     wx, wy = Tuple(w.viewpos)
     lxchk, lxind = Int(floor(wx - 4.5)) |> chunk_index
     lychk, lyind = Int(floor(wy - 4)) |> chunk_index
-	rxchk, rxind = Int(ceil(wx + 4.5)) |> chunk_index
+    rxchk, rxind = Int(ceil(wx + 4.5)) |> chunk_index
     rychk, ryind = Int(ceil(wy + 4)) |> chunk_index
     xoffset = 4.5 - mod(wx, 16)
     yoffset = 4 - mod(wy, 16)
